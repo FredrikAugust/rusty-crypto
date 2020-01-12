@@ -13,3 +13,15 @@ pub fn euclidean_algorithm(a: u32, b: u32) -> u32 {
 
     return r[k];
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_euclidean_algorithm() {
+        assert_eq!(euclidean_algorithm(12, 24), 12);
+        assert_eq!(euclidean_algorithm(6, 24), 6);
+        assert_eq!(euclidean_algorithm(3, 30), 3);
+    }
+}
