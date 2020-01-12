@@ -14,6 +14,31 @@ pub fn euclidean_algorithm(a: u32, b: u32) -> u32 {
     return r[k];
 }
 
+// Computes Bézout coefficients
+pub fn extended_euclidean_algorithm(a: i32, b: i32) -> (i32, i32) {
+    let [mut s, mut t, mut r] = [0, 1, b];
+    let [mut old_s, mut old_t, mut old_r] = [1, 0, a];
+
+    while r != 0 {
+        let q = (old_r / r) as f32;
+        let q = q.floor() as i32;
+
+        let new_r = old_r - q * r;
+        old_r = r;
+        r = new_r;
+
+        let new_s = old_s - q * s;
+        old_s = s;
+        s = new_s;
+
+        let new_t = old_t - q * t;
+        old_t = t;
+        t = new_t;
+    }
+
+    return (old_s, old_t);
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -23,5 +48,10 @@ mod tests {
         assert_eq!(euclidean_algorithm(12, 24), 12);
         assert_eq!(euclidean_algorithm(6, 24), 6);
         assert_eq!(euclidean_algorithm(3, 30), 3);
+    }
+
+    #[test]
+    fn test_extended_euclidean_algorithm() {
+        assert_eq!(extended_euclidean_algorithm(240, 46), (-9, 47));
     }
 }
