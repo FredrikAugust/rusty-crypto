@@ -59,3 +59,16 @@ pub fn kasiski_test(ciphertext: &str, word_length: usize) -> Result<usize, Strin
         ));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_kasiski_test() {
+        assert_eq!(
+            kasiski_test("abcfifiabcgegeabcdiggblakuleba", 3).unwrap(),
+            7
+        );
+    }
+}
