@@ -1,17 +1,15 @@
 pub fn euclidean_algorithm(a: u32, b: u32) -> u32 {
-    let mut r: Vec<u32> = vec![a, b];
+    let mut remainders: Vec<u32> = vec![a, b];
     let mut k = 1;
 
-    while r[k] != 0 {
-        let q = (r[k - 1] / r[k]) as f32;
-        let q = q.floor() as u32;
-        r.push(r[k - 1] - q * r[k]);
+    while remainders[k] != 0 {
+        let quotient = (remainders[k - 1] / remainders[k]) as f32;
+        let quotient = quotient.floor() as u32;
+        remainders.push(remainders[k - 1] - quotient * remainders[k]);
         k += 1;
     }
 
-    k -= 1;
-
-    return r[k];
+    return remainders[k - 1];
 }
 
 // Computes Bézout coefficients by using the extended Euclidean algorithm
