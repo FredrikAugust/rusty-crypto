@@ -14,9 +14,11 @@ pub fn euclidean_algorithm(a: u32, b: u32) -> u32 {
     return r[k];
 }
 
-// Computes Bézout coefficients
-pub fn extended_euclidean_algorithm(a: i32, b: i32) -> (i32, i32) {
+// Computes Bézout coefficients by using the extended Euclidean algorithm
+pub fn bezout_coefficients(a: i32, b: i32) -> (i32, i32) {
     let [mut s, mut t, mut r] = [0, 1, b];
+    // As we actually only care about the newest (k) and the previous (k-1)
+    // values, we don't need a vector, we can just use two variables.
     let [mut old_s, mut old_t, mut old_r] = [1, 0, a];
 
     while r != 0 {
@@ -52,6 +54,6 @@ mod tests {
 
     #[test]
     fn test_extended_euclidean_algorithm() {
-        assert_eq!(extended_euclidean_algorithm(240, 46), (-9, 47));
+        assert_eq!(bezout_coefficients(240, 46), (-9, 47));
     }
 }
