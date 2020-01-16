@@ -1,11 +1,13 @@
 #[path = "euclidean_algorithm.rs"]
 mod euclidean_algorithm;
 
+use euclidean_algorithm::euclidean_algorithm;
+
 pub fn euler_totient(n: u32) -> u32 {
     let mut total = 0;
 
     for i in 1..n {
-        if euclidean_algorithm::euclidean_algorithm(i, n) == 1 {
+        if euclidean_algorithm(i, n) == 1 {
             total += 1;
         }
     }

@@ -1,6 +1,7 @@
 mod euclidean_algorithm;
 mod euler;
 mod kasiski_test;
+mod miller_rabin;
 
 fn main() {
     println!("{}", euclidean_algorithm::euclidean_algorithm(24, 36));
@@ -11,4 +12,5 @@ fn main() {
     );
     println!("{}", euler::euler_totient(37));
     println!("{}", euler::euler_totient(35));
+    println!("{}", miller_rabin::miller_rabin_test(29));
 }
