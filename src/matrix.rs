@@ -86,9 +86,39 @@ pub fn cofactor(pos: (usize, usize), v: Vec<Vec<i32>>) -> i32 {
     }
 }
 
+pub fn matrix_inverse(v: &Vec<Vec<i32>>) -> Vec<Vec<f64>> {
+    let mut b: Vec<Vec<f64>> = Vec::new();
+    let det = laplace(&v) as f64;
+
+    let ilen = v.len();
+    let jlen = v[0].len();
+
+    for i in 0..ilen {
+        b.push(Vec::new());
+        for j in 0..jlen {
+            let cof = cofactor((i, j), v.to_vec()) as f64;
+            b[i].push(-cof / -det);
+        }
+    }
+
+    return b;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_matrix_inverse() {
+        assert_eq!(
+            matrix_inverse(&vec![vec![2, 4, 3], vec![6, 1, 5], vec![-2, 1, 3]]),
+            vec![
+                vec![1.0 / 46.0, 9.0 / 92.0, -17.0 / 92.0],
+                vec![7.0 / 23.0, -3.0 / 23.0, -2.0 / 23.0],
+                vec![-2.0 / 23.0, 5.0 / 46.0, 11.0 / 46.0]
+            ] as Vec<Vec<f64>>
+        )
+    }
 
     #[test]
     fn test_matrix_dot() {
