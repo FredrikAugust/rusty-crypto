@@ -3,8 +3,8 @@ mod euclidean_algorithm;
 
 use euclidean_algorithm::euclidean_algorithm;
 
-pub fn euler_totient(n: u32) -> u32 {
-    let mut total = 0;
+pub fn euler_totient(n: i32) -> i32 {
+    let mut total = 0i32;
 
     for i in 1..n {
         if euclidean_algorithm(i, n) == 1 {

@@ -4,13 +4,9 @@ mod kasiski_test;
 mod miller_rabin;
 
 fn main() {
-    println!("{}", euclidean_algorithm::euclidean_algorithm(24, 36));
-    println!("{:?}", euclidean_algorithm::bezout_coefficients(24, 36));
-    println!(
-        "{}",
-        kasiski_test::kasiski_test("abcdefghijklmabcdefklikklmabcdefa", 6).unwrap()
-    );
-    println!("{}", euler::euler_totient(37));
-    println!("{}", euler::euler_totient(35));
-    println!("{}", miller_rabin::miller_rabin_test(29));
+    println!("========== OUTPUT ==========");
+    println!("{}", euclidean_algorithm::find_modular_inverse(3, 31));
+    println!("{}", euclidean_algorithm::find_modular_inverse(21, 91));
+    println!("{}", euclidean_algorithm::find_modular_inverse(39, 195));
+    println!("{}", euclidean_algorithm::find_modular_inverse(41, 195));
 }

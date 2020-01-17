@@ -1,15 +1,51 @@
-pub fn euclidean_algorithm(a: u32, b: u32) -> u32 {
-    let mut remainders: Vec<u32> = vec![a, b];
+pub fn euclidean_algorithm(a: i32, b: i32) -> i32 {
+    let mut remainders: Vec<i32> = vec![a, b];
     let mut k = 1;
 
     while remainders[k] != 0 {
         let quotient = (remainders[k - 1] / remainders[k]) as f32;
-        let quotient = quotient.floor() as u32;
+        let quotient = quotient.floor() as i32;
         remainders.push(remainders[k - 1] - quotient * remainders[k]);
+        println!(
+            "k-1={:5} | k={:5} | q={:4}",
+            remainders[k - 1],
+            remainders[k],
+            quotient
+        );
         k += 1;
     }
 
     return remainders[k - 1];
+}
+
+pub fn find_modular_inverse(a: i32, n: i32) -> i32 {
+    if euclidean_algorithm(a, n) != 1 {
+        println!(
+            "Can't find modular inverse if the numbers aren't relatively prime. a={}, n={}",
+            a, n
+        );
+    }
+
+    // We will do this with vectors, as that makes it a bit clearer IMO.
+    let mut r = vec![n, a];
+    let mut p = vec![0, 1];
+    let mut q: Vec<i32> = vec![];
+
+    while r.last().unwrap() != &0i32 {
+        q.push(r[r.len() - 2] / r[r.len() - 1]);
+        r.push(r[r.len() - 2] - r[r.len() - 1] * q.last().unwrap());
+        p.push(p[p.len() - 2] - p[p.len() - 1] * q[q.len() - 1] % n);
+        println!("{:?} {:?} {:?}", q, r, p);
+    }
+
+    // Rust doesn't do modulo, only remainder
+    let result = p[p.len() - 2] % n;
+
+    if result < 0 {
+        return (result % n) + n;
+    } else {
+        return result % n;
+    }
 }
 
 // Computes Bézout coefficients by using the extended Euclidean algorithm
@@ -53,5 +89,10 @@ mod tests {
     #[test]
     fn test_extended_euclidean_algorithm() {
         assert_eq!(bezout_coefficients(240, 46), (-9, 47));
+    }
+
+    #[test]
+    fn test_inverse_modulo() {
+        assert_eq!(find_modular_inverse(3, 31), 21);
     }
 }
