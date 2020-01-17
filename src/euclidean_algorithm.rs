@@ -87,7 +87,7 @@ mod tests {
     }
 
     #[test]
-    fn test_extended_euclidean_algorithm() {
+    fn test_bezout_coefficients() {
         assert_eq!(bezout_coefficients(240, 46), (-9, 47));
     }
 
