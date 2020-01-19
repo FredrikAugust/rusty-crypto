@@ -15,3 +15,5 @@ Trying to implement some things from TTM4135 in Rust.
 - Remove row+col from matrix (submatrix)
 - Scalar matrix multiplication
 - Find inverse of matrix
+- Hill cipher
+- Matrix modulo
