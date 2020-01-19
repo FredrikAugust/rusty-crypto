@@ -1,16 +1,16 @@
 #[path = "matrix.rs"]
 mod matrix;
 
-fn char_to_code(a: char) -> u32 {
+fn char_to_code(a: char) -> i32 {
     // A -> 0, Z -> 25
-    return (a as u32) - 0x41;
+    return ((a as u32) - 0x41) as i32;
 }
 
-fn code_to_char(c: u32) -> char {
+fn code_to_char(c: i32) -> char {
     return ((c + 0x41) as u8) as char;
 }
 
-pub fn hill_cipher(text: &str, key: Vec<Vec<u32>>) -> String {
+pub fn hill_cipher(text: &str, key: Vec<Vec<i32>>) -> String {
     if text.len() % key.len() != 0 {
         panic!("Text length must be a multiple of y-dimension of key.");
     }
@@ -20,7 +20,7 @@ pub fn hill_cipher(text: &str, key: Vec<Vec<u32>>) -> String {
 
     // Create rows
     for _ in 0..key.len() {
-        text_matrix.push(Vec::<u32>::new());
+        text_matrix.push(Vec::<i32>::new());
     }
 
     for (i, c) in text.chars().enumerate() {

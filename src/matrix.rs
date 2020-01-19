@@ -1,21 +1,21 @@
 extern crate num;
 
-pub fn laplace(b: &Vec<Vec<i32>>) -> i32 {
+pub fn laplace<T: num::Num + Copy + std::ops::Neg>(b: &Vec<Vec<T>>) -> T {
     match (b.len(), b[0].len()) {
         (2, 2) => {
             return b[0][0] * b[1][1] - b[0][1] * b[1][0];
         }
         (3, 3) => {
-            let mut acc = 0;
+            let mut acc = T::zero();
             for i in 0..3 {
                 let submatrix = submatrix((i, 0), b.to_vec());
 
                 let intermediary = *b.get(0).unwrap().get(i).unwrap() * laplace(&submatrix);
 
                 if i & 0b1 == 1 {
-                    acc -= intermediary;
+                    acc = acc - intermediary;
                 } else {
-                    acc += intermediary;
+                    acc = acc + intermediary;
                 }
             }
 
@@ -25,7 +25,7 @@ pub fn laplace(b: &Vec<Vec<i32>>) -> i32 {
     }
 }
 
-pub fn modulus<T: num::Integer + Copy + PartialOrd<u32>>(matrix: &mut Vec<Vec<T>>, n: T) {
+pub fn modulus<T: num::Num + Copy + std::cmp::PartialOrd>(matrix: &mut Vec<Vec<T>>, n: T) {
     for row in matrix {
         for cell in row {
             if cell < &mut T::from(num::zero()) {
@@ -37,7 +37,7 @@ pub fn modulus<T: num::Integer + Copy + PartialOrd<u32>>(matrix: &mut Vec<Vec<T>
     }
 }
 
-pub fn multiply<T: num::Integer + Copy>(a: Vec<Vec<T>>, b: Vec<Vec<T>>) -> Vec<Vec<T>> {
+pub fn multiply<T: num::Num + Copy>(a: Vec<Vec<T>>, b: Vec<Vec<T>>) -> Vec<Vec<T>> {
     let mut c: Vec<Vec<T>> = Vec::new();
 
     if a[0].len() != b.len() {
@@ -69,8 +69,8 @@ pub fn scalar_matrix_multiplication(m: &mut Vec<Vec<i32>>, a: i32) {
     }
 }
 
-pub fn submatrix(pos: (usize, usize), m: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let mut c: Vec<Vec<i32>> = Vec::new();
+pub fn submatrix<T: num::Num + Copy>(pos: (usize, usize), m: Vec<Vec<T>>) -> Vec<Vec<T>> {
+    let mut c: Vec<Vec<T>> = Vec::new();
 
     for i in 0..m[0].len() {
         if i == pos.1 {
@@ -92,7 +92,7 @@ pub fn submatrix(pos: (usize, usize), m: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     return c;
 }
 
-pub fn cofactor(pos: (usize, usize), v: Vec<Vec<i32>>) -> i32 {
+pub fn cofactor<T: num::Signed + Copy>(pos: (usize, usize), v: Vec<Vec<T>>) -> T {
     let submatrix = submatrix(pos, v);
 
     let det = laplace(&submatrix);
@@ -105,9 +105,11 @@ pub fn cofactor(pos: (usize, usize), v: Vec<Vec<i32>>) -> i32 {
     }
 }
 
-pub fn matrix_inverse(v: &Vec<Vec<i32>>) -> Vec<Vec<f64>> {
-    let mut b: Vec<Vec<f64>> = Vec::new();
-    let det = laplace(&v) as f64;
+pub fn matrix_inverse<T: num::Signed + Copy + num::ToPrimitive, U: num::Float>(
+    v: &Vec<Vec<T>>,
+) -> Vec<Vec<U>> {
+    let mut b: Vec<Vec<U>> = Vec::new();
+    let det = laplace(v);
 
     let ilen = v.len();
     let jlen = v[0].len();
@@ -115,8 +117,8 @@ pub fn matrix_inverse(v: &Vec<Vec<i32>>) -> Vec<Vec<f64>> {
     for i in 0..ilen {
         b.push(Vec::new());
         for j in 0..jlen {
-            let cof = cofactor((i, j), v.to_vec()) as f64;
-            b[i].push(-cof / -det);
+            let cof = cofactor((i, j), v.to_vec());
+            b[i].push(-U::from(cof).unwrap() / -U::from(det).unwrap());
         }
     }
 
@@ -130,12 +132,12 @@ mod tests {
     #[test]
     fn test_matrix_inverse() {
         assert_eq!(
-            matrix_inverse(&vec![vec![2, 4, 3], vec![6, 1, 5], vec![-2, 1, 3]]),
+            matrix_inverse::<i64, f64>(&vec![vec![2, 4, 3], vec![6, 1, 5], vec![-2, 1, 3]]),
             vec![
                 vec![1.0 / 46.0, 9.0 / 92.0, -17.0 / 92.0],
                 vec![7.0 / 23.0, -3.0 / 23.0, -2.0 / 23.0],
                 vec![-2.0 / 23.0, 5.0 / 46.0, 11.0 / 46.0]
-            ] as Vec<Vec<f64>>
+            ]
         )
     }
 
