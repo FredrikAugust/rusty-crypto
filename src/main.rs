@@ -1,5 +1,6 @@
 mod euclidean_algorithm;
 mod euler;
+mod hill_cipher;
 mod kasiski_test;
 mod matrix;
 mod miller_rabin;

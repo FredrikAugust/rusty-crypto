@@ -1,3 +1,5 @@
+extern crate num;
+
 pub fn laplace(b: &Vec<Vec<i32>>) -> i32 {
     match (b.len(), b[0].len()) {
         (2, 2) => {
@@ -23,17 +25,33 @@ pub fn laplace(b: &Vec<Vec<i32>>) -> i32 {
     }
 }
 
-pub fn dot(a: Vec<Vec<i32>>, b: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
-    let mut c: Vec<Vec<i32>> = vec![];
+pub fn modulus<T: num::Integer + Copy + PartialOrd<u32>>(matrix: &mut Vec<Vec<T>>, n: T) {
+    for row in matrix {
+        for cell in row {
+            if cell < &mut T::from(num::zero()) {
+                *cell = (*cell % n) + n;
+            } else {
+                *cell = *cell % n;
+            }
+        }
+    }
+}
 
-    for i in 0..a[0].len() {
+pub fn multiply<T: num::Integer + Copy>(a: Vec<Vec<T>>, b: Vec<Vec<T>>) -> Vec<Vec<T>> {
+    let mut c: Vec<Vec<T>> = Vec::new();
+
+    if a[0].len() != b.len() {
+        panic!("The y-axis of a must be equal to the x-axis of b.");
+    }
+
+    for i in 0..a.len() {
         c.push(Vec::new());
 
-        for j in 0..b.len() {
-            let mut acc = 0i32;
+        for j in 0..b[0].len() {
+            let mut acc = T::from(num::zero());
 
-            for k in 0..b[0].len() {
-                acc += &a[i][k] * &b[k][j];
+            for k in 0..a[0].len() {
+                acc = acc + a[i][k] * b[k][j];
             }
 
             c[i].push(acc);
@@ -122,13 +140,24 @@ mod tests {
     }
 
     #[test]
-    fn test_matrix_dot() {
+    fn test_matrix_multiply_equal_size() {
         assert_eq!(
-            dot(
+            multiply(
                 vec![vec![1, 2, 3], vec![4, 5, 6], vec![7, 8, 9]],
                 vec![vec![10, 11, 12], vec![13, 14, 15], vec![16, 17, 18]]
             ),
             [[84, 90, 96], [201, 216, 231], [318, 342, 366]]
+        );
+    }
+
+    #[test]
+    fn test_matrix_multiply_different_sizes() {
+        assert_eq!(
+            multiply(
+                vec![vec![6, 24, 1], vec![13, 16, 10], vec![20, 17, 15]],
+                vec![vec![0], vec![2], vec![19]]
+            ),
+            vec![vec![67], vec![222], vec![319]]
         );
     }
 
