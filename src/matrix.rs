@@ -79,6 +79,7 @@ pub fn cofactor(pos: (usize, usize), v: Vec<Vec<i32>>) -> i32 {
 
     let det = laplace(&submatrix);
 
+    // If i + j is odd
     if (pos.0 + pos.1) & 0b1 == 1 {
         return -det;
     } else {
