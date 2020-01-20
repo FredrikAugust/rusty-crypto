@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod euclidean_algorithm;
 mod euler;
 mod hill_cipher;
