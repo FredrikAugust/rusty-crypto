@@ -1,3 +1,5 @@
+#[path = "euclidean_algorithm.rs"]
+mod euclidean_algorithm;
 #[path = "matrix.rs"]
 mod matrix;
 
@@ -42,6 +44,40 @@ pub fn hill_cipher(text: &str, key: Vec<Vec<i32>>) -> String {
     return result;
 }
 
+pub fn hill_cipher_decrypt(ciphertext: &str, key: Vec<Vec<i32>>) -> String {
+    if ciphertext.len() % key.len() != 0 {
+        panic!("Text length must be a multiple of y-dimension of key.");
+    }
+
+    // Create matrix of text
+    let mut text_matrix = Vec::new();
+
+    // Create rows
+    for _ in 0..key.len() {
+        text_matrix.push(Vec::<i32>::new());
+    }
+
+    for (i, c) in ciphertext.chars().enumerate() {
+        text_matrix[i % key.len()].push(char_to_code(c).into());
+    }
+
+    let key = matrix::modular_matrix_multiplicative_inverse(&key, 26);
+    println!("key={:?}", key);
+
+    let mut plaintext = matrix::multiply(key, text_matrix);
+    matrix::modulus(&mut plaintext, 26);
+
+    let mut result = String::new();
+
+    for i in 0..plaintext[0].len() {
+        for j in 0..plaintext.len() {
+            result.push(code_to_char(plaintext[j][i]));
+        }
+    }
+
+    return result;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -54,6 +90,17 @@ mod tests {
                 vec![vec![6, 24, 1], vec![13, 16, 10], vec![20, 17, 15]]
             ),
             "POH"
+        );
+    }
+
+    #[test]
+    fn test_hill_cipher_decryption() {
+        assert_eq!(
+            hill_cipher_decrypt(
+                "POH",
+                vec![vec![6, 24, 1], vec![13, 16, 10], vec![20, 17, 15]]
+            ),
+            "ACT"
         );
     }
 
