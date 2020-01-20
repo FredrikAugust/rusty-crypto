@@ -1,7 +1,4 @@
-#[path = "euclidean_algorithm.rs"]
-mod euclidean_algorithm;
-
-use euclidean_algorithm::euclidean_algorithm;
+use crate::euclidean_algorithm::euclidean_algorithm;
 
 pub fn euler_totient(n: i32) -> i32 {
     let mut total = 0i32;

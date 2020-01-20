@@ -1,7 +1,6 @@
 extern crate num;
 
-#[path = "euclidean_algorithm.rs"]
-mod euclidean_algorithm;
+use crate::euclidean_algorithm;
 
 pub fn laplace<T: num::Num + Copy + std::fmt::Debug + std::ops::Neg>(b: &Vec<Vec<T>>) -> T {
     match (b.len(), b[0].len()) {

@@ -1,7 +1,4 @@
-#[path = "euclidean_algorithm.rs"]
-mod euclidean_algorithm;
-#[path = "matrix.rs"]
-mod matrix;
+use crate::matrix;
 
 fn char_to_code(a: char) -> i32 {
     // A -> 0, Z -> 25
