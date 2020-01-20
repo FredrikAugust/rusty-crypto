@@ -30,3 +30,7 @@ _This is some of the first code I've ever written in Rust, and the code quality 
   - _Encrypt a plaintext using a key matrix_
 - Matrix modulo
   - _Perform modulo on all cells of matrix_
+- Modular multiplicative inverse of matrix
+  - _Find the modular multiplicative inverse of a matrix_
+- Hill cipher decrypt
+  - _Decrypt a hill cipher given a key_
