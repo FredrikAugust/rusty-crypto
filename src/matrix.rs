@@ -131,7 +131,6 @@ pub fn matrix_inverse<
             vec![U::from(-v[1][0]).unwrap(), U::from(v[0][0]).unwrap()],
         ];
         // Find multiplicative modular inverse of [ad-bc] and multiply with v
-        let ad_bc = v[1][1] * v[0][0] - (-v[0][1]) * (-v[1][0]);
         let result = scalar_matrix_multiplication(&v, U::one() / U::from(det).unwrap());
 
         return result;
