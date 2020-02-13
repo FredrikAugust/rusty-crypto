@@ -34,3 +34,5 @@ _This is some of the first code I've ever written in Rust, and the code quality 
   - _Find the modular multiplicative inverse of a matrix_
 - Hill cipher decrypt
   - _Decrypt a hill cipher given a key_
+- Square-multiply algorithm
+  - _Efficient algorithm for calculating exponents_
